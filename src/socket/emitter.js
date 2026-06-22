@@ -5,7 +5,8 @@ function init(server) {
   const { createAdapter } = require('@socket.io/redis-adapter');
   const Redis = require('ioredis');
 
-  const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
+  const BUILTIN_ORIGINS = 'https://charming-rugelach-ecae2a.netlify.app,http://localhost:5173,http://localhost:5174';
+  const allowedOrigins = (process.env.FRONTEND_URL || BUILTIN_ORIGINS)
     .split(',').map((o) => o.trim()).filter(Boolean);
 
   io = new Server(server, {
