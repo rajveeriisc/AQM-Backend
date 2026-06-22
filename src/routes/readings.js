@@ -32,10 +32,11 @@ function fmtReading(r) {
 router.post('/', async (req, res) => {
   const data = req.body;
   const deviceId = data.device_id;
-  const token = req.headers['x-device-token'];
-  
+  const authHeader = req.headers['authorization'];
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : req.headers['x-device-token'];
+
   if (!deviceId) return res.status(400).json({ error: 'device_id required' });
-  if (!token) return res.status(401).json({ error: 'Device token required in x-device-token header' });
+  if (!token) return res.status(401).json({ error: 'Device token required' });
 
   try {
     const { rows } = await query('SELECT id, status FROM devices WHERE id = $1 AND provision_token = $2', [deviceId, token]);

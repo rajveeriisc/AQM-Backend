@@ -246,12 +246,13 @@ const provisionSchema = z.object({
   firmware_version: z.string().optional(),
   ip:               z.string().optional(),
   pairing_code:     z.string().length(6).regex(/^\d{6}$/).optional(),
+  auth_token:       z.string().min(1).max(64).optional(),
 });
 
 router.post('/provision', provisionLimiter, validate(provisionSchema), async (req, res) => {
-  const { device_id, mac, firmware_version, ip, pairing_code } = req.body;
+  const { device_id, mac, firmware_version, ip, pairing_code, auth_token } = req.body;
   try {
-    const token = uuidv4();
+    const token = auth_token || uuidv4();
     await query(
       `INSERT INTO devices (id, name, status, last_seen, provision_token, mac_address, ip_address, firmware_version)
        VALUES ($1, $1, 'online', NOW(), $2, $3, $4, $5)
