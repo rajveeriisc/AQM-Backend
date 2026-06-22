@@ -12,7 +12,8 @@ function init(server) {
     cors: {
       origin: (origin, cb) => {
         if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-        cb(new Error(`CORS: origin ${origin} not allowed`));
+        console.warn('[Socket.io CORS] Blocked origin:', origin);
+        cb(null, false);
       },
       methods: ['GET', 'POST'],
       credentials: true,
