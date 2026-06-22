@@ -1,4 +1,11 @@
 require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
+
+// Startup env check — shows which variables Railway has injected
+const REQUIRED_VARS = ['NEON_DATABASE_URL', 'JWT_SECRET', 'MQTT_URL', 'FRONTEND_URL'];
+for (const v of REQUIRED_VARS) {
+  console.log(`[ENV] ${v}:`, process.env[v] ? '✓ SET' : '✗ MISSING');
+}
+
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
