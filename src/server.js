@@ -29,11 +29,13 @@ app.use(compression());
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',').map((o) => o.trim()).filter(Boolean);
 
+console.log('[CORS] Allowed origins:', allowedOrigins);
+
 app.use(cors({
   origin: (origin, cb) => {
-    // Allow same-origin (origin undefined) and listed origins
     if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-    cb(new Error(`CORS: origin ${origin} not allowed`));
+    console.warn('[CORS] Blocked origin:', origin);
+    cb(null, false);
   },
   credentials: true,
 }));
