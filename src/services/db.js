@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.NEON_DATABASE_URL || process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }, // required for Neon
   max: 5,
   idleTimeoutMillis: 10000,      // release connections after 10s idle (Neon suspends at ~5min)
