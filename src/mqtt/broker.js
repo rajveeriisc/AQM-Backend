@@ -37,7 +37,7 @@ function startBroker() {
   });
 
   client.on('error', (err) => {
-    console.error('[MQTT] Client error:', err.message);
+    console.error('[MQTT] Client error:', err.message || err.code || String(err));
   });
 
   return client;
